@@ -3,19 +3,34 @@
 [ext_resource type="PackedScene" uid="uid://3c5x5silgh83" path="res://SquareTile.tscn" id="1_fwqok"]
 [ext_resource type="Script" uid="uid://di7s3pc23my6s" path="res://camera_control.gd" id="2_afn4l"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_afn4l"]
+radius = 0.25
+height = 1.0
+
 [node name="Node3D" type="Node3D" unique_id=775809364]
 
 [node name="Node3D" parent="." unique_id=721391917 instance=ExtResource("1_fwqok")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9935174, -0.1181736)
 
-[node name="CameraControl" type="Node3D" parent="." unique_id=1463240864 node_paths=PackedStringArray("pan_center")]
+[node name="Camera" type="Node3D" parent="." unique_id=1970258946 node_paths=PackedStringArray("pan_center", "camera", "label")]
 script = ExtResource("2_afn4l")
-pan_center = NodePath("Orbit center")
+pan_center = NodePath(".")
+camera = NodePath("Camera3D")
+max_distance = 15.0
+label = NodePath("Camera3D/Label3D")
 
-[node name="Orbit center" type="Node3D" parent="CameraControl" unique_id=1970258946]
-
-[node name="Camera3D" type="Camera3D" parent="CameraControl" unique_id=1599528038]
+[node name="Camera3D" type="Camera3D" parent="Camera" unique_id=1599528038]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78685844, 1.7590036)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="CameraControl/Camera3D" unique_id=348721755]
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera/Camera3D" unique_id=348721755]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019214272, 0.023015976)
+
+[node name="Label3D" type="Label3D" parent="Camera/Camera3D" unique_id=1950271410]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.24290985, -0.4939896)
+text = "asd"
+font_size = 10
+outline_size = 5
+uppercase = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera" unique_id=2133852948]
+mesh = SubResource("CapsuleMesh_afn4l")
