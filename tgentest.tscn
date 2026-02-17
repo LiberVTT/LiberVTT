@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwjcbbrxjl1qu"]
+
+[ext_resource type="Script" uid="uid://def8wjmc4cwjk" path="res://tile_generator.gd" id="1_6ql6s"]
+[ext_resource type="PackedScene" uid="uid://3c5x5silgh83" path="res://SquareTile.tscn" id="2_bs4bd"]
+[ext_resource type="Script" uid="uid://x13f3ky8ohp8" path="res://InputManager.gd" id="3_bs4bd"]
+
+[node name="MapGenerator" type="Node3D"]
+
+[node name="MapGen" type="Node3D" parent="."]
+script = ExtResource("1_6ql6s")
+tile_scene = ExtResource("2_bs4bd")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.36523426, 0.51306134, -0.77677023, -1.4734011e-08, 0.83441526, 0.55113626, 0.93091565, -0.20129389, 0.304757, 0, 2.3764763, 2.4868038)
+script = ExtResource("3_bs4bd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.16323988, 0.98658645, 0, -0.98658645, -0.16323988, 0, 6.3315024, 0)
