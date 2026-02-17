@@ -7,30 +7,67 @@
 radius = 0.25
 height = 1.0
 
+[sub_resource type="SphereMesh" id="SphereMesh_afn4l"]
+radius = 0.1
+height = 0.2
+
 [node name="Node3D" type="Node3D" unique_id=775809364]
 
-[node name="Node3D" parent="." unique_id=721391917 instance=ExtResource("1_fwqok")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9935174, -0.1181736)
-
-[node name="Camera" type="Node3D" parent="." unique_id=1970258946 node_paths=PackedStringArray("pan_center", "camera", "label")]
+[node name="Camera Target" type="Node3D" parent="." unique_id=1970258946 node_paths=PackedStringArray("pan_center", "camera", "indicator_sphere", "label")]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, 0)
 script = ExtResource("2_afn4l")
 pan_center = NodePath(".")
 camera = NodePath("Camera3D")
-max_distance = 15.0
+indicator_sphere = NodePath("Indicator Sphere")
+debug = true
 label = NodePath("Camera3D/Label3D")
 
-[node name="Camera3D" type="Camera3D" parent="Camera" unique_id=1599528038]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78685844, 1.7590036)
+[node name="Camera3D" type="Camera3D" parent="Camera Target" unique_id=1599528038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1813509e-07, 0.42970645, 3.1103108)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Camera/Camera3D" unique_id=348721755]
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera Target/Camera3D" unique_id=348721755]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019214272, 0.023015976)
 
-[node name="Label3D" type="Label3D" parent="Camera/Camera3D" unique_id=1950271410]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.24290985, -0.4939896)
+[node name="Label3D" type="Label3D" parent="Camera Target/Camera3D" unique_id=1950271410]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1054274e-15, 0.25680387, -0.4939897)
 text = "asd"
 font_size = 10
 outline_size = 5
 uppercase = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera" unique_id=2133852948]
+[node name="Middle Capsule" type="MeshInstance3D" parent="Camera Target" unique_id=2133852948]
 mesh = SubResource("CapsuleMesh_afn4l")
+
+[node name="Indicator Sphere" type="MeshInstance3D" parent="Camera Target" unique_id=2091963473]
+transform = Transform3D(0.9999999, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 0.9999999, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_afn4l")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera Target/Indicator Sphere" unique_id=1922261734]
+transform = Transform3D(1.0000001, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 1.0000001, 0, 0.094807744, 0)
+
+[node name="cubes" type="Node3D" parent="." unique_id=1473328588]
+
+[node name="Node3D5" parent="cubes" unique_id=2017408128 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.218217, -1, 1.1040633)
+
+[node name="Node3D6" parent="cubes" unique_id=1656658326 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04658556, -1, 1.1040633)
+
+[node name="Node3D7" parent="cubes" unique_id=199561294 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0998914, -1, 1.1040633)
+
+[node name="Node3D8" parent="cubes" unique_id=522119751 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3267138, -1, 1.1040633)
+
+[node name="Node3D2" parent="cubes" unique_id=2116591718 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.118217, -1, 0.0020633042)
+
+[node name="Node3D" parent="cubes" unique_id=721391917 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="Node3D3" parent="cubes" unique_id=1502220613 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3182168, -1, 0.006063305)
+
+[node name="Node3D4" parent="cubes" unique_id=272228070 instance=ExtResource("1_fwqok")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.218217, -1, 0.0040633045)
