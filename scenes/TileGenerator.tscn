@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bkm88wm00ieog"]
+
+[ext_resource type="Script" uid="uid://def8wjmc4cwjk" path="res://scripts/tile_generator.gd" id="1_avact"]
+[ext_resource type="PackedScene" uid="uid://3c5x5silgh83" path="res://scenes/SquareTile.tscn" id="2_nj4by"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_avact")
+tile_scene = ExtResource("2_nj4by")
