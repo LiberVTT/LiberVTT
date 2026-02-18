@@ -66,7 +66,7 @@ func _apply_world_drag() -> void:
 	if world_pos_now != null:
 		var delta_move = _raycast_hit - world_pos_now
 		# Only move on X and Z to keep the camera at its current height
-		global_translate(Vector3(delta_move.x, 0, delta_move.z))
+		#global_translate(Vector3(delta_move.x, 0, delta_move.z))
 		camera_target.global_translate(Vector3(delta_move.x, 0, delta_move.z))
 
 func _apply_rotation() -> void:
@@ -78,20 +78,9 @@ func _apply_rotation() -> void:
 	print(_mouse_start, current_mouse_position, difference_vector)
 	
 	if difference_vector != Vector2.ZERO:
-		if camera_target.rotation.x - difference_vector.y > deg_to_rad(min_pitch) and camera_target.rotation.x + difference_vector.y < deg_to_rad(max_pitch):
-			camera_target.rotation.x += difference_vector.y
-		
-		camera_target.rotation.y += difference_vector.x
-		
+		camera_target.rotation.x = clamp((camera_target.rotation.x - difference_vector.y), deg_to_rad(min_pitch), deg_to_rad(max_pitch))
+		camera_target.global_rotation.y += difference_vector.x
 		camera_target.rotation.z = 0
-	
-	#if difference_vector != Vector2.ZERO:
-		#camera_center.rotate_y(difference_vector.x)
-		#camera_target.rotate_y(difference_vector.x)
-		#camera_center.rotate_x(difference_vector.y)
-		#camera_target.rotate_x(difference_vector.y)
-		#camera_target.rotation.z = 0
-		#camera_center.rotation.z = 0
 	
 	_mouse_start = current_mouse_position
 
@@ -108,7 +97,6 @@ func _unhandled_input(event: InputEvent) -> void:
 					elif event.button_index == MOUSE_BUTTON_RIGHT:
 						_is_rotating = true
 						print_debug("rotating")
-						_rotation_input = event.position
 							# Optional: Uncomment the line below to snap mouse back to start on release
 							# Input.warp_mouse(_rotate_start_mouse_pos)
 				else:
@@ -134,9 +122,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Handle Mouse Motion
 		if event is InputEventMouseMotion and _mouse_input:
-			if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-				_rotation_input += event.relative
-			elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			#if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+				#_rotation_input += event.relative
+			if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 				_pan_input += event.relative
 	
 
@@ -214,9 +202,9 @@ func _update_target_movement(delta) -> void:
 	_apply_movement(delta)
 
 func _update_camera_position(delta) -> void:
-	var diff_vector: Vector3 = global_position - camera_target.position
 	global_position = lerp(global_position, camera_target.position, look_smoothing * delta)
-	global_rotation = lerp(global_rotation, camera_target.rotation, look_smoothing * delta)
+	global_rotation.x = lerp_angle(global_rotation.x, camera_target.rotation.x, look_smoothing * delta)
+	global_rotation.y = lerp_angle(global_rotation.y, camera_target.rotation.y, look_smoothing * delta)
 	return
 	
 
