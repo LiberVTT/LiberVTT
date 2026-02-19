@@ -1,0 +1,410 @@
+[gd_scene format=3 uid="uid://dk3ompo18yt8k"]
+
+[ext_resource type="Script" uid="uid://di7s3pc23my6s" path="res://scripts/camera_control.gd" id="1_cvpoc"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_afn4l"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_afn4l"]
+radius = 0.25
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujsrk"]
+transparency = 1
+no_depth_test = true
+albedo_color = Color(0.78039217, 0.039215688, 0.3372549, 0.16862746)
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 3.81
+emission_operator = 1
+backlight_enabled = true
+backlight = Color(1, 1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cvpoc"]
+radius = 0.25
+height = 1.0
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_kod1s"]
+transparency = 1
+albedo_color = Color(0.8039216, 0.14509805, 0.827451, 0.2509804)
+
+[node name="Camera" type="Node3D" unique_id=1662088480]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, 0)
+
+[node name="Camera Center" type="Node3D" parent="." unique_id=1786872123 node_paths=PackedStringArray("camera_center", "camera", "indicator_sphere", "camera_target", "debug_check", "twod_check", "label")]
+script = ExtResource("1_cvpoc")
+camera_center = NodePath(".")
+camera = NodePath("Camera3D")
+indicator_sphere = NodePath("Camera3D/Indicator Sphere")
+camera_target = NodePath("../Target position")
+debug_check = NodePath("GUI/VBoxContainer/Debug Mode")
+twod_check = NodePath("GUI/VBoxContainer/2D toggle")
+label = NodePath("GUI/Debug Label")
+
+[node name="Camera3D" type="Camera3D" parent="Camera Center" unique_id=1236093972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1813509e-07, 0.42970645, 3.1103106)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera Center/Camera3D" unique_id=362757000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019214272, 0.023015976)
+
+[node name="Indicator Sphere" type="MeshInstance3D" parent="Camera Center/Camera3D" unique_id=650285473]
+transform = Transform3D(0.9999998, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 0.9999998, -1.1813509e-07, -0.42970645, -3.1103106)
+visible = false
+mesh = SubResource("SphereMesh_afn4l")
+skeleton = NodePath("../../..")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera Center/Camera3D/Indicator Sphere" unique_id=1973534902]
+transform = Transform3D(1.0000001, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 1.0000001, 0, 0.094807744, 0)
+
+[node name="Middle Capsule" type="MeshInstance3D" parent="Camera Center" unique_id=1807636268]
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_afn4l")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_ujsrk")
+
+[node name="GUI" type="Node" parent="Camera Center" unique_id=381264599]
+
+[node name="Debug Label" type="Label" parent="Camera Center/GUI" unique_id=29586425]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -345.0
+offset_bottom = 183.0
+grow_horizontal = 0
+horizontal_alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera Center/GUI" unique_id=1196387642]
+custom_minimum_size = Vector2(5.205, 1.105)
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 181.0
+offset_bottom = 125.0
+size_flags_stretch_ratio = 1.08
+
+[node name="2D toggle" type="CheckButton" parent="Camera Center/GUI/VBoxContainer" unique_id=1221748366]
+layout_mode = 2
+text = "2D mode"
+
+[node name="Debug Mode" type="CheckButton" parent="Camera Center/GUI/VBoxContainer" unique_id=914799625]
+layout_mode = 2
+text = "debug mode"
+
+[node name="Button" type="Button" parent="Camera Center/GUI/VBoxContainer" unique_id=1669611108]
+layout_mode = 2
+text = "settins"
+
+[node name="Settins List" type="Control" parent="Camera Center/GUI" unique_id=940062848]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+size_flags_stretch_ratio = 1.85
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera Center/GUI/Settins List" unique_id=301313113]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.0
+offset_top = -188.5
+offset_right = 214.0
+offset_bottom = 188.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VSplitContainer" type="HBoxContainer" parent="Camera Center/GUI/Settins List/VBoxContainer" unique_id=1259617798]
+layout_mode = 2
+alignment = 1
+
+[node name="Zoom Settings" type="FoldableContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer" unique_id=1462704719]
+layout_mode = 2
+title = "Zoom Settings"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings" unique_id=8507873]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 2.17
+
+[node name="Zoom Speed" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer" unique_id=1847351559]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer/Zoom Speed" unique_id=686393007]
+layout_mode = 2
+text = "Zoom Speed"
+
+[node name="Zoom Speed Slider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer/Zoom Speed" unique_id=1551057878]
+layout_mode = 2
+min_value = 0.5
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="(KB) Zoom Speed" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer" unique_id=843932748]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer/(KB) Zoom Speed" unique_id=909190256]
+layout_mode = 2
+text = "(KB) Zoom Speed"
+
+[node name="(KB) Zoom Speed Slider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer/(KB) Zoom Speed" unique_id=533443445]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+step = 0.5
+value = 4.0
+
+[node name="Zoom Smoothing" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer" unique_id=1921544617]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer/Zoom Smoothing" unique_id=1908005134]
+layout_mode = 2
+text = "Zoom Smoothing"
+
+[node name="Zoom Smoothing Slider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Zoom Settings/VBoxContainer/Zoom Smoothing" unique_id=238162530]
+layout_mode = 2
+min_value = 1.0
+max_value = 40.0
+step = 0.5
+value = 10.0
+
+[node name="Look Settings" type="FoldableContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer" unique_id=696119338]
+layout_mode = 2
+title = "Look Settings"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings" unique_id=54007685]
+layout_mode = 2
+
+[node name="Look Sensitivity" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer" unique_id=1713863958]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Look Sensitivity" unique_id=1585382247]
+layout_mode = 2
+text = "Look Sensitivity"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Look Sensitivity" unique_id=792821975]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.5
+
+[node name="Pan Speed" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer" unique_id=614227454]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Pan Speed" unique_id=313740400]
+layout_mode = 2
+text = "Pan Speed"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Pan Speed" unique_id=291313581]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.5
+
+[node name="Sprint Multiplier" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer" unique_id=1922801043]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Sprint Multiplier" unique_id=1804573294]
+layout_mode = 2
+text = "Sprint Multiplier"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Sprint Multiplier" unique_id=1137325586]
+layout_mode = 2
+min_value = 1.0
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="(KB) Look Sensitivity" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer" unique_id=2054155387]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/(KB) Look Sensitivity" unique_id=240307546]
+layout_mode = 2
+text = "(KB) Look Sensitivity"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/(KB) Look Sensitivity" unique_id=1952833272]
+layout_mode = 2
+min_value = 1.0
+max_value = 5.0
+step = 0.05
+value = 3.0
+
+[node name="(KB) Pan Speed" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer" unique_id=175066188]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/(KB) Pan Speed" unique_id=2061781493]
+layout_mode = 2
+text = "(KB) Pan Speen"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/(KB) Pan Speed" unique_id=1003404157]
+layout_mode = 2
+min_value = 1.0
+max_value = 4.0
+step = 0.05
+value = 2.0
+
+[node name="Look Smoothing" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer" unique_id=768876114]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Look Smoothing" unique_id=1331560902]
+layout_mode = 2
+text = "Look Smoothing"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Look Settings/VBoxContainer/Look Smoothing" unique_id=1470102750]
+layout_mode = 2
+min_value = 1.0
+max_value = 30.0
+step = 0.1
+value = 10.0
+
+[node name="Constraints" type="FoldableContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer" unique_id=1331167673]
+layout_mode = 2
+title = "Constraints"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints" unique_id=721787221]
+layout_mode = 2
+
+[node name="Min Pitch" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer" unique_id=1804053823]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Min Pitch" unique_id=600267457]
+layout_mode = 2
+text = "Min Pitch"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Min Pitch" unique_id=1292131600]
+layout_mode = 2
+min_value = -90.0
+max_value = -50.0
+value = -70.0
+
+[node name="Max Pitch" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer" unique_id=1108645637]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Max Pitch" unique_id=1327484685]
+layout_mode = 2
+text = "Max Pitch"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Max Pitch" unique_id=1823453162]
+layout_mode = 2
+min_value = -30.0
+max_value = -5.0
+value = -15.0
+
+[node name="Min Zoom" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer" unique_id=41614064]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Min Zoom" unique_id=904811446]
+layout_mode = 2
+text = "Min Zoom"
+
+[node name="Min Zoom Slider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Min Zoom" unique_id=983171099]
+layout_mode = 2
+max_value = 5.0
+step = 0.1
+value = 2.0
+
+[node name="Max Zoom" type="VSplitContainer" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer" unique_id=1155654717]
+layout_mode = 2
+dragging_enabled = false
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Max Zoom" unique_id=2063049225]
+layout_mode = 2
+text = "Max Zoom"
+
+[node name="Max Zoom Slider" type="HSlider" parent="Camera Center/GUI/Settins List/VBoxContainer/VSplitContainer/Constraints/VBoxContainer/Max Zoom" unique_id=371268701]
+layout_mode = 2
+min_value = 10.0
+max_value = 30.0
+step = 0.5
+value = 20.0
+
+[node name="Button" type="Button" parent="Camera Center/GUI/Settins List/VBoxContainer" unique_id=882160592]
+layout_mode = 2
+text = "apply"
+
+[node name="F1" type="Label" parent="Camera Center/GUI" unique_id=1408832790]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -28.0
+offset_right = 135.0
+offset_bottom = -5.0
+grow_vertical = 0
+text = "Press f1 for help."
+
+[node name="Help" type="PanelContainer" parent="Camera Center/GUI" unique_id=1663357010]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -185.47998
+offset_top = -108.33002
+offset_right = 185.47998
+offset_bottom = 108.33002
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera Center/GUI/Help" unique_id=632769364]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera Center/GUI/Help/MarginContainer" unique_id=1543153815]
+layout_mode = 2
+alignment = 1
+
+[node name="Keyboard" type="Label" parent="Camera Center/GUI/Help/MarginContainer/HBoxContainer" unique_id=1333123167]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.73
+text = "Keyboard:
+(WASD) - move 
+(shift) - move faster
+(QE|arrow keys) - rotate
+R - zoom in
+F - zoom out
+H - go to origin"
+
+[node name="Mouse" type="Label" parent="Camera Center/GUI/Help/MarginContainer/HBoxContainer" unique_id=1998012205]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Mouse:
+Right drag - rotate
+Middle drag - drag"
+horizontal_alignment = 2
+
+[node name="Target position" type="MeshInstance3D" parent="." unique_id=18629884]
+transform = Transform3D(0.9999998, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 0.9999998, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_cvpoc")
+surface_material_override/0 = SubResource("ORMMaterial3D_kod1s")
+
+[connection signal="toggled" from="Camera Center/GUI/VBoxContainer/2D toggle" to="Camera Center" method="_on_d_toggle_toggled"]
+[connection signal="pressed" from="Camera Center/GUI/VBoxContainer/Button" to="Camera Center" method="_on_button_pressed"]
+[connection signal="pressed" from="Camera Center/GUI/Settins List/VBoxContainer/Button" to="Camera Center" method="_on_settings_apply"]

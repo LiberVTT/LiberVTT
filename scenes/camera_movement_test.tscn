@@ -1,56 +1,11 @@
 [gd_scene format=3 uid="uid://cxkgqfvmy38yk"]
 
-[ext_resource type="Script" uid="uid://di7s3pc23my6s" path="res://scripts/camera_control.gd" id="1_j8pj7"]
+[ext_resource type="PackedScene" uid="uid://dk3ompo18yt8k" path="res://scenes/camera.tscn" id="1_j8pj7"]
 [ext_resource type="PackedScene" uid="uid://3c5x5silgh83" path="res://scenes/SquareTile.tscn" id="2_ujsrk"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_afn4l"]
-radius = 0.25
-height = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_afn4l"]
-radius = 0.1
-height = 0.2
 
 [node name="Node3D" type="Node3D" unique_id=775809364]
 
-[node name="Target position" type="MeshInstance3D" parent="." unique_id=80367417]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0742455, 0, 0)
-mesh = SubResource("CapsuleMesh_afn4l")
-
-[node name="Camera Center" type="Node3D" parent="." unique_id=1970258946 node_paths=PackedStringArray("camera_center", "camera", "indicator_sphere", "camera_target", "label")]
-transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, 0)
-script = ExtResource("1_j8pj7")
-camera_center = NodePath(".")
-camera = NodePath("Camera3D")
-indicator_sphere = NodePath("Camera3D/Indicator Sphere")
-camera_target = NodePath("../Target position")
-debug = true
-label = NodePath("Camera3D/Label3D")
-
-[node name="Camera3D" type="Camera3D" parent="Camera Center" unique_id=1599528038]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1813509e-07, 0.42970645, 3.1103108)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Camera Center/Camera3D" unique_id=348721755]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019214272, 0.023015976)
-
-[node name="Label3D" type="Label3D" parent="Camera Center/Camera3D" unique_id=1950271410]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1054274e-15, 0.25680387, -0.4939897)
-text = "asd"
-font_size = 10
-outline_size = 5
-uppercase = true
-
-[node name="Indicator Sphere" type="MeshInstance3D" parent="Camera Center/Camera3D" unique_id=2091963473]
-transform = Transform3D(0.9999998, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 0.9999998, -1.1813509e-07, -0.42970645, -3.1103106)
-visible = false
-mesh = SubResource("SphereMesh_afn4l")
-skeleton = NodePath("../..")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Camera Center/Camera3D/Indicator Sphere" unique_id=1922261734]
-transform = Transform3D(1.0000001, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 1.0000001, 0, 0.094807744, 0)
-
-[node name="Middle Capsule" type="MeshInstance3D" parent="Camera Center" unique_id=2133852948]
-mesh = SubResource("CapsuleMesh_afn4l")
+[node name="Camera" parent="." unique_id=1662088480 instance=ExtResource("1_j8pj7")]
 
 [node name="cubes" type="Node3D" parent="." unique_id=1473328588]
 

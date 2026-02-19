@@ -1,0 +1,282 @@
+[gd_scene format=3 uid="uid://dk3ompo18yt8k"]
+
+[ext_resource type="Script" uid="uid://di7s3pc23my6s" path="res://scripts/camera_control.gd" id="1_cvpoc"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_afn4l"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_afn4l"]
+radius = 0.25
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujsrk"]
+transparency = 1
+no_depth_test = true
+albedo_color = Color(0.78039217, 0.039215688, 0.3372549, 0.16862746)
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 3.81
+emission_operator = 1
+backlight_enabled = true
+backlight = Color(1, 1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cvpoc"]
+radius = 0.25
+height = 1.0
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_kod1s"]
+transparency = 1
+albedo_color = Color(0.8039216, 0.14509805, 0.827451, 0.2509804)
+
+[node name="Camera" type="Node3D" unique_id=1662088480]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, 0)
+
+[node name="Camera Center" type="Node3D" parent="." unique_id=1786872123 node_paths=PackedStringArray("camera_center", "camera", "indicator_sphere", "camera_target", "debug_check", "twod_check", "label")]
+script = ExtResource("1_cvpoc")
+camera_center = NodePath(".")
+camera = NodePath("Camera3D")
+indicator_sphere = NodePath("Camera3D/Indicator Sphere")
+camera_target = NodePath("../Target position")
+debug_check = NodePath("GUI/Debug Mode")
+twod_check = NodePath("GUI/2D toggle")
+label = NodePath("GUI/Debug Label")
+
+[node name="Camera3D" type="Camera3D" parent="Camera Center" unique_id=1236093972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1813509e-07, 0.42970645, 3.1103106)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera Center/Camera3D" unique_id=362757000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019214272, 0.023015976)
+
+[node name="Indicator Sphere" type="MeshInstance3D" parent="Camera Center/Camera3D" unique_id=650285473]
+transform = Transform3D(0.9999998, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 0.9999998, -1.1813509e-07, -0.42970645, -3.1103106)
+visible = false
+mesh = SubResource("SphereMesh_afn4l")
+skeleton = NodePath("../../..")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Camera Center/Camera3D/Indicator Sphere" unique_id=1973534902]
+transform = Transform3D(1.0000001, 0, 7.1054274e-15, 0, 1, 0, -7.1054274e-15, 0, 1.0000001, 0, 0.094807744, 0)
+
+[node name="Middle Capsule" type="MeshInstance3D" parent="Camera Center" unique_id=1807636268]
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_afn4l")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_ujsrk")
+
+[node name="GUI" type="Node" parent="Camera Center" unique_id=381264599]
+
+[node name="2D toggle" type="CheckButton" parent="Camera Center/GUI" unique_id=1221748366]
+offset_top = 26.0
+offset_right = 145.0
+offset_bottom = 57.0
+text = "2D mode"
+metadata/_edit_use_anchors_ = true
+
+[node name="Debug Mode" type="CheckButton" parent="Camera Center/GUI" unique_id=914799625]
+offset_right = 145.0
+offset_bottom = 31.0
+text = "debug mode"
+metadata/_edit_use_anchors_ = true
+
+[node name="Debug Label" type="Label" parent="Camera Center/GUI" unique_id=29586425]
+offset_left = 807.0
+offset_top = 1.0
+offset_right = 1152.0
+offset_bottom = 184.0
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Camera Center/GUI" unique_id=1669611108]
+offset_left = 1.0
+offset_top = 54.0
+offset_right = 143.0
+offset_bottom = 85.0
+text = "settins"
+
+[node name="Settins List" type="Control" parent="Camera Center/GUI/Button" unique_id=940062848]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Camera Center/GUI/Button/Settins List" unique_id=1035439146]
+layout_mode = 0
+offset_left = 157.0
+offset_top = -1.0
+offset_right = 984.0
+offset_bottom = 231.0
+color = Color(0.6745098, 0, 0.21568628, 0.05490196)
+
+[node name="VSplitContainer" type="VBoxContainer" parent="Camera Center/GUI/Button/Settins List" unique_id=1487338042]
+layout_mode = 0
+offset_top = 31.0
+offset_right = 1146.0
+offset_bottom = 217.0
+
+[node name="Zoom Settings" type="HBoxContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer" unique_id=2089505586]
+layout_mode = 2
+alignment = 1
+
+[node name="Zoom Speed" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings" unique_id=1847351559]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Zoom Speed" unique_id=686393007]
+layout_mode = 2
+text = "Zoom Speed"
+
+[node name="Zoom Speed Slider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Zoom Speed" unique_id=1551057878]
+layout_mode = 2
+
+[node name="(KB) Zoom Speed" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings" unique_id=843932748]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/(KB) Zoom Speed" unique_id=909190256]
+layout_mode = 2
+text = "(KB) Zoom Speed"
+
+[node name="(KB) Zoom Speed Slider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/(KB) Zoom Speed" unique_id=533443445]
+layout_mode = 2
+
+[node name="Min Zoom" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings" unique_id=41614064]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Min Zoom" unique_id=904811446]
+layout_mode = 2
+text = "Min Zoom"
+
+[node name="Min Zoom Slider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Min Zoom" unique_id=983171099]
+layout_mode = 2
+
+[node name="Max Zoom" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings" unique_id=1155654717]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Max Zoom" unique_id=2063049225]
+layout_mode = 2
+text = "Max Zoom"
+
+[node name="Max Zoom Slider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Max Zoom" unique_id=371268701]
+layout_mode = 2
+
+[node name="Zoom Smoothing" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings" unique_id=1921544617]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Zoom Smoothing" unique_id=1908005134]
+layout_mode = 2
+text = "Zoom Smoothing"
+
+[node name="Zoom Smoothing Slider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/Zoom Settings/Zoom Smoothing" unique_id=238162530]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer" unique_id=1810989876]
+layout_mode = 2
+alignment = 1
+
+[node name="Look Sensitivity" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2" unique_id=1713863958]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Look Sensitivity" unique_id=1585382247]
+layout_mode = 2
+text = "Look Sensitivity"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Look Sensitivity" unique_id=792821975]
+layout_mode = 2
+
+[node name="Pan Speed" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2" unique_id=614227454]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Pan Speed" unique_id=313740400]
+layout_mode = 2
+text = "Pan Speed"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Pan Speed" unique_id=291313581]
+layout_mode = 2
+
+[node name="Sprint Multiplier" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2" unique_id=1922801043]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Sprint Multiplier" unique_id=1804573294]
+layout_mode = 2
+text = "Sprint Multiplier"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Sprint Multiplier" unique_id=1137325586]
+layout_mode = 2
+
+[node name="(KB) Look Sensitivity" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2" unique_id=2054155387]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/(KB) Look Sensitivity" unique_id=240307546]
+layout_mode = 2
+text = "(KB) Look Sensitivity"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/(KB) Look Sensitivity" unique_id=1952833272]
+layout_mode = 2
+
+[node name="(KB) Pan Speed" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2" unique_id=175066188]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/(KB) Pan Speed" unique_id=2061781493]
+layout_mode = 2
+text = "(KB) Pan Speen"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/(KB) Pan Speed" unique_id=1003404157]
+layout_mode = 2
+
+[node name="Look Smoothing" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2" unique_id=768876114]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Look Smoothing" unique_id=1331560902]
+layout_mode = 2
+text = "Look Smoothing"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer2/Look Smoothing" unique_id=1470102750]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer" unique_id=1171793258]
+layout_mode = 2
+alignment = 1
+
+[node name="Min Pitch" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3" unique_id=1804053823]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Min Pitch" unique_id=600267457]
+layout_mode = 2
+text = "Min Pitch"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Min Pitch" unique_id=1292131600]
+layout_mode = 2
+
+[node name="Max Pitch" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3" unique_id=1108645637]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Max Pitch" unique_id=1327484685]
+layout_mode = 2
+text = "Max Pitch"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Max Pitch" unique_id=1823453162]
+layout_mode = 2
+
+[node name="Min Distance" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3" unique_id=129552008]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Min Distance" unique_id=244114144]
+layout_mode = 2
+text = "Min Distance"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Min Distance" unique_id=1124826035]
+layout_mode = 2
+
+[node name="Max Distance" type="VSplitContainer" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3" unique_id=1463715313]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Max Distance" unique_id=457264243]
+layout_mode = 2
+text = "Max Distance"
+
+[node name="HSlider" type="HSlider" parent="Camera Center/GUI/Button/Settins List/VSplitContainer/HBoxContainer3/Max Distance" unique_id=546028429]
+layout_mode = 2
+
+[node name="Target position" type="MeshInstance3D" parent="." unique_id=18629884]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, -0.6433131, 0, 5.6240218e-08)
+mesh = SubResource("CapsuleMesh_cvpoc")
+surface_material_override/0 = SubResource("ORMMaterial3D_kod1s")
+
+[connection signal="pressed" from="Camera Center/GUI/Button" to="Camera Center" method="_on_button_pressed"]
