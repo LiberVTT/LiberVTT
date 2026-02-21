@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dk3ompo18yt8k" path="res://scenes/camera.tscn" id="1_j8pj7"]
 [ext_resource type="PackedScene" uid="uid://3c5x5silgh83" path="res://scenes/SquareTile.tscn" id="2_ujsrk"]
-[ext_resource type="PackedScene" uid="uid://p72epauccnyr" path="res://scenes/dev_piece.tscn" id="3_ujsrk"]
+[ext_resource type="PackedScene" uid="uid://p72epauccnyr" path="res://dev_piece.tscn" id="3_ujsrk"]
 
 [node name="Node3D" type="Node3D" unique_id=775809364]
 

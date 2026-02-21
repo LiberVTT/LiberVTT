@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://dk3ompo18yt8k"]
 
 [ext_resource type="Script" uid="uid://di7s3pc23my6s" path="res://scripts/camera_control.gd" id="1_cvpoc"]
+[ext_resource type="Material" uid="uid://cdhfenqek1yyx" path="res://materials/hover_glow.tres" id="2_tmlye"]
+[ext_resource type="Material" uid="uid://hfhyfvkqg22a" path="res://materials/selection_glow.tres" id="3_gtx3x"]
+[ext_resource type="Material" uid="uid://bdjn8t3nx1xer" path="res://materials/fallback_material.tres" id="4_gtx3x"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_afn4l"]
 radius = 0.1
@@ -41,6 +44,9 @@ camera_target = NodePath("../Target position")
 debug_check = NodePath("GUI/VBoxContainer/Debug Mode")
 twod_check = NodePath("GUI/VBoxContainer/2D toggle")
 label = NodePath("GUI/Debug Label")
+hover_material = ExtResource("2_tmlye")
+select_material = ExtResource("3_gtx3x")
+fallback_material = ExtResource("4_gtx3x")
 
 [node name="Camera3D" type="Camera3D" parent="Camera Center" unique_id=1236093972]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1813509e-07, 0.42970645, 3.1103106)
@@ -397,7 +403,8 @@ layout_mode = 2
 size_flags_vertical = 1
 text = "Mouse:
 Right drag - rotate
-Middle drag - drag"
+Middle drag - drag
+Left click - select piece / tile"
 horizontal_alignment = 2
 
 [node name="Target position" type="MeshInstance3D" parent="." unique_id=18629884]

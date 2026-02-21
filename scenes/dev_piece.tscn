@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://p72epauccnyr"]
+
+[ext_resource type="Material" uid="uid://0wbuvh2ou38k" path="res://materials/base_material.tres" id="1_b7aga"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uo7c0"]
+material = ExtResource("1_b7aga")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uo7c0"]
+
+[node name="Node3D" type="Node3D" unique_id=68711688]
+
+[node name="Dev Piece sb" type="StaticBody3D" parent="." unique_id=1905667890]
+
+[node name="Dev Piece Mesh" type="MeshInstance3D" parent="Dev Piece sb" unique_id=189010861]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.029033, 0)
+mesh = SubResource("CapsuleMesh_uo7c0")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dev Piece sb" unique_id=1536917114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0345285, 0)
+shape = SubResource("CapsuleShape3D_uo7c0")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1907723247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1906078, 0)
+billboard = 1
+text = "dev piece"

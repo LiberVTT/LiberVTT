@@ -27,6 +27,11 @@ extends Node3D
 @export var min_zoom: float = 2.0
 @export var max_zoom: float = 20.0
 
+@export_group("Materials")
+@export var hover_material: Material
+@export var select_material: Material
+@export var fallback_material: Material
+
 var _version_info
 var _mouse_input: bool = false
 var _mouse_start: Vector2 = Vector2.ZERO
@@ -37,6 +42,8 @@ var _is_dragging: bool = false
 var _is_rotating: bool = false
 var _is_twod: bool = false
 var _raycast_hit: Vector3 = Vector3.ZERO
+var _hovered_object: Node3D = null
+var _selected_object: Node3D = null
 
 const _mouse_multiplier: float = 0.01
 
@@ -47,8 +54,55 @@ func _get_raycast_hit(screen_pos: Vector2) -> Dictionary:
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
 	return space.intersect_ray(query)
 	
-func _jump_to_point(point: Vector3, delta: float):
-	global_translate(lerp(camera_center.position, point, look_smoothing))
+func _jump_to_point(point: Vector3):
+	camera_target.global_position = point
+	
+func _find_mesh_child(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node
+	if node:
+		if node.get_children():
+			for child in node.get_children():
+				if child is MeshInstance3D:
+					return child
+				
+	return null
+
+func _set_material_overlay(object: Node, material: Material) -> void:
+	var temp = _find_mesh_child(object)
+	if temp:
+		temp.material_overlay = material
+
+func _select_object() -> void:	
+	if _hovered_object == null:
+		_selected_object = null
+		return
+	else:
+		if _selected_object != null:
+			_find_mesh_child(_selected_object).material_overlay = null
+		_selected_object = _hovered_object
+		_jump_to_point(_selected_object.global_position)
+		
+	if _selected_object != null:
+		_set_material_overlay(_selected_object, select_material)
+
+func _check_hover() -> void:
+	var hit = _get_raycast_hit(get_viewport().get_mouse_position())	
+	if hit:
+		# points to an object, tile or piece
+		var hit_object = hit.collider
+		if _hovered_object == null:
+			_hovered_object = hit_object
+		_set_material_overlay(hit_object, hover_material)
+		if hit_object != _hovered_object:
+			_set_material_overlay(_hovered_object, null)
+			_hovered_object = hit_object
+	else:
+		# points to the void
+		if _hovered_object != null:
+			_set_material_overlay(_hovered_object, null)
+			_hovered_object = null
+	
 
 func _apply_world_drag() -> void:
 	if not _is_dragging: return
@@ -93,8 +147,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					MOUSE_BUTTON_RIGHT:
 						_is_rotating = true
 					MOUSE_BUTTON_LEFT:
-						#jump to the selected piece
-						return
+						_select_object()
 					MOUSE_BUTTON_WHEEL_UP:
 						_target_zoom = max(_target_zoom - zoom_speed, min_zoom)
 					MOUSE_BUTTON_WHEEL_DOWN:
@@ -114,9 +167,6 @@ func _handle_keyboard_input(delta: float) -> void:
 	if !_is_twod:
 		var rot_dir: Vector2 = Input.get_vector("rotate_left", "rotate_right", "rotate_down", "rotate_up")
 		_rotation_input += rot_dir * kb_look_sensitivity
-	else:
-		var rot_dir: float = Input.get_axis("rotate_left", "rotate_right")
-		_rotation_input.x += rot_dir * kb_look_sensitivity
 	
 	var zoom_dir: float = Input.get_axis("zoom_in", "zoom_out")
 	_target_zoom = clamp(_target_zoom + (zoom_dir * kb_zoom_speed * delta), min_zoom, max_zoom)
@@ -205,6 +255,7 @@ func _process(_delta: float) -> void:
 	_update(_delta)
 	_update_raycast()
 	_check_update()
+	_check_hover()
 			
 func _update(delta) -> void:
 	_update_scroll(delta)
@@ -213,7 +264,16 @@ func _update(delta) -> void:
 	
 func _check_update() -> void:
 	if debug_check.button_pressed:
-		label.text = _version_info["version"] + "." + _version_info["branch_version"] + " \"" + _version_info["version_name"] + "\" - " + _version_info["branch_name"] +  " - " + _version_info["date"] + "\n" + str(_target_zoom) + " target zoom\n" + str(camera_target.rotation) + " target rotation\n" + str(get_viewport().get_mouse_position()) + " mouse position\n" + str(camera_target.global_position) + " target position"
+		label.text = _version_info["version"] + "." + _version_info["branch_version"] + " \"" + _version_info["version_name"] + "\" - " + _version_info["branch_name"] +  " - " + _version_info["date"] + "\n" 
+		label.text += str(_target_zoom) + " target zoom\n" 
+		label.text += str(camera_target.rotation) + " target rotation\n"
+		label.text += str(get_viewport().get_mouse_position()) + " mouse position\n"
+		label.text += str(camera_target.global_position) + " target position\n"
+		label.text += str(indicator_sphere.global_position) + " indicator position"
+		if _hovered_object != null:
+			label.text += "\nHovering over: " + _find_mesh_child(_hovered_object).name
+		if _selected_object != null:
+			label.text += "\nSelected: " + _find_mesh_child(_selected_object).name
 	else:
 		label.text = ""
 	
@@ -257,6 +317,7 @@ func _on_d_toggle_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		# enter pseudo 2d
 		camera_target.rotation.x = deg_to_rad(-90)
+		camera_target.rotation.y = deg_to_rad(0)
 	else:
 		camera_target.rotation.x = deg_to_rad(max_pitch)
 		# enter 3d
